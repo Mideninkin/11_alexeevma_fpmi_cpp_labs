@@ -9,13 +9,13 @@ int main()
         if (i % 2)
         {
             odd *= i;
-            std::cout << odd;
         }
         else
         {
             even *= i;
-            std::cout << even;
         }
     }
+    std::cout << odd << " " << even;
     return 0;
+
 }
