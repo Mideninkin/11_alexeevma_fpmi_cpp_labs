@@ -4,11 +4,11 @@ int main()
 {
     int min = 9;
     int n;
-    std::cout << "Введите натуральное число n: ";
+    std::cout << "Enter n: ";
     std::cin >> n;
     if (n <= 0) 
     {
-        std::cout << "Число должно быть натуральным (положительным)" << std::endl;
+        std::cout << "Number must be natural" << std::endl;
         return 1;
     }
     int original = n;
@@ -31,7 +31,8 @@ int main()
         }
         n /= 10;
     }
-    std::cout << "Минимальная цифра числа: " << min << std::endl;
-    std::cout << "Новое число: " << newNum;
+    std::cout << "Minimal digit if a number: " << min << std::endl;
+    std::cout << "New number: " << newNum;
     return 0;
+
 }
