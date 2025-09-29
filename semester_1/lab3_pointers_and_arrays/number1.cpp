@@ -10,7 +10,7 @@ int main()
     std::cout << "Enter number of array elements (1-" << max << "):\n";
     std::cin >> n;
 
-    if (!(std::cin) || (n < 1) || (n > max))
+    if (!std::cin || (n < 1) || (n > max))
     {
         std::cout << "Invalid input. Try again";
         return 1;
@@ -123,4 +123,5 @@ int main()
     std::cout << "]\n";
 
     return 0;
+
 }
