@@ -152,6 +152,8 @@ int main()
     std::cout << "]\n";
     std::cout << "Number of remaining elements: " << newSize << std::endl;
     std::cout << "Number of removed elements: " << n - newSize << std::endl;
-
+    delete[] arr;
+    
     return 0;
+
 }
