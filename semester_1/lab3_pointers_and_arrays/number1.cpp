@@ -8,9 +8,8 @@ int main()
     int arr[max];
 
     std::cout << "Enter number of array elements (1-" << max << "):\n";
-    std::cin >> n;
 
-    if (!std::cin || (n < 1) || (n > max))
+    if (!(std::cin >> n) || (n < 1) || (n > max))
     {
         std::cout << "Invalid input. Try again";
         return 1;
@@ -34,9 +33,9 @@ int main()
         int a, b;
         std::cout << "Enter interval borders [a, b]:\n";
         std::cout << "a = ";
-        std::cin >> a;
+        if (!(std::cin >> a));
         std::cout << "b = ";
-        std::cin >> b;
+        if (!(std::cin >> b));
 
         if (a > b)
         {
@@ -95,7 +94,7 @@ int main()
         }
     }
     int sum = 0;
-    if (firstNil != lastNil && firstNil != -1 && lastNil != -1)
+    if ((firstNil != lastNil) && (firstNil != -1) && (lastNil != -1))
     {
         for (int i = firstNil + 1; i <= lastNil - 1; i++)
         {
@@ -113,7 +112,7 @@ int main()
             arr[i + 1] = k;
         }
     }
-    std::cout << "Modifieded array: [";
+    std::cout << "Modifided array: [";
     for (int i = 0; i < n; i++)
     {
         std::cout << arr[i];
@@ -123,5 +122,4 @@ int main()
     std::cout << "]\n";
 
     return 0;
-
 }
