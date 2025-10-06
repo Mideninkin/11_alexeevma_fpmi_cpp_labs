@@ -6,9 +6,8 @@ int main()
 {
     int n;
     std::cout << "Enter number of array elements (1-" << max << "):\n";
-    std::cin >> n;
 
-    if (!std::cin || (n < 1) || (n > max))
+    if (!(std::cin >> n) || (n < 1) || (n > max))
     {
         std::cout << "Invalid input. Try again";
         return 1;
@@ -22,7 +21,7 @@ int main()
 
     if (answer == 'M' || answer == 'm')
     {
-        std::cout << "Enter " << n << " integer numbers:\n";
+        std::cout << "Enter " << n << " real numbers:\n";
         for (int i = 0; i < n; i++)
         {
             std::cout << "Element [" << i << "]: ";
@@ -34,9 +33,9 @@ int main()
         double a, b;
         std::cout << "Enter interval borders [a, b]:\n";
         std::cout << "a = ";
-        std::cin >> a;
+        if (!(std::cin >> a));
         std::cout << "b = ";
-        std::cin >> b;
+        if (!(std::cin >> b));
 
         if (a > b)
         {
@@ -109,7 +108,7 @@ int main()
         }
     }
     double sum = 0;
-    if (firstNegative != lastNegative && firstNegative != -1 && lastNegative != -1)
+    if ((firstNegative != lastNegative) && (firstNegative != -1) && (lastNegative != -1))
     {
         for (int i = firstNegative + 1; i <= lastNegative - 1; i++)
         {
@@ -152,8 +151,9 @@ int main()
     std::cout << "]\n";
     std::cout << "Number of remaining elements: " << newSize << std::endl;
     std::cout << "Number of removed elements: " << n - newSize << std::endl;
-    delete[] arr;
-    
-    return 0;
 
+    delete[] arr;
+
+    return 0;
 }
+
