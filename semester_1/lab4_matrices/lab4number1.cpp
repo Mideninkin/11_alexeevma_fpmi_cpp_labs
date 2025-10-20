@@ -1,6 +1,7 @@
 #include <iostream>
 #include <ctime>
 #include <random>
+#include <limits>
 
 void Input(int *x, int min, int max)
 {
@@ -21,7 +22,7 @@ void Swap(int *q, int *o)
     *o = temp;
 }
 
-void OutputOfMatrix(int **arr, int n)
+void OutputOfMatrix(int** arr, int n)
 {
     std::cout << "Matrix: " << std::endl;
     for (int i = 0; i < n; i++)
@@ -34,6 +35,12 @@ void OutputOfMatrix(int **arr, int n)
         }
         std::cout << std::endl;
     }
+}
+void AllocateMatrix(int**& arr, int n)
+{
+    arr = new int *[n];
+    for (int i = 0; i < n; i++)
+        arr[i] = new int[n];
 }
 
 void FindMaximumsInNegativeColumns(int **arr, int n)
@@ -162,15 +169,14 @@ int main()
 
 {
     const int max = 100;
-    int n, i, j;
+    int n;
 
     std::cout << "Enter the side length of the square matrix (1-100): " << std::endl;
     Input(&n, 1, 100);
     std::cout << "Number of matrix elements: " << n * n << std::endl;
 
-    int **arr = new int *[n];
-    for (int i = 0; i < n; i++)
-        arr[i] = new int[n];
+    int ** arr;
+    AllocateMatrix(arr, n);
 
     DecideTypeOfInput(arr, n);
     OutputOfMatrix(arr, n);
