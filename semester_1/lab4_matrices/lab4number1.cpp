@@ -3,26 +3,19 @@
 #include <random>
 #include <limits>
 
-void Input(int *x, int min, int max)
+void Input(int &x, int min)
 {
     int d;
-    while (!(std::cin >> d) || (d < min) || (d > max))
+    while (!(std::cin >> d) || (d < min))
     {
         std::cout << "Invalid input" << '\n';
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
-    *x = d;
+    x = d;
 }
 
-void Swap(int *q, int *o)
-{
-    int temp = *q;
-    *q = *o;
-    *o = temp;
-}
-
-void OutputOfMatrix(int** arr, int n)
+void OutputOfMatrix(int **arr, int n)
 {
     std::cout << "Matrix: " << std::endl;
     for (int i = 0; i < n; i++)
@@ -36,7 +29,7 @@ void OutputOfMatrix(int** arr, int n)
         std::cout << std::endl;
     }
 }
-void AllocateMatrix(int**& arr, int n)
+void AllocateMatrix(int **&arr, int n)
 {
     arr = new int *[n];
     for (int i = 0; i < n; i++)
@@ -45,7 +38,7 @@ void AllocateMatrix(int**& arr, int n)
 
 void FindMaximumsInNegativeColumns(int **arr, int n)
 {
-    std::cout << "Maximums in columns without positive elements: " << std::endl;
+    bool FoundColumnWithoutPositives = false;
     for (int j = 0; j < n; j++)
     {
         bool HasPositive = false;
@@ -61,6 +54,8 @@ void FindMaximumsInNegativeColumns(int **arr, int n)
 
         if (!HasPositive)
         {
+            std::cout << "Maximums in columns without positive elements: " << std::endl;
+            FoundColumnWithoutPositives = true;
             int max = arr[0][j];
             for (int i = 0; i < n; i++)
             {
@@ -70,6 +65,11 @@ void FindMaximumsInNegativeColumns(int **arr, int n)
             std::cout << "Column: " << j + 1 << ": " << max << std::endl;
         }
     }
+    if (!FoundColumnWithoutPositives)
+        {
+            std::cout << "There are no columns without positive elements!" << std::endl;
+        }
+    
 }
 
 void FindNumberOfNegatives(int **arr, int n)
@@ -89,7 +89,7 @@ void FindNumberOfNegatives(int **arr, int n)
 void DecideTypeOfInput(int **arr, int n)
 {
     char answer;
-    std::cout << "What input do you choose: 'M' or 'A'? ";
+    std::cout << "What input do you choose: manual or automatic? Press 'M' or 'm' to choose 1 option, 'A' or 'a' to choose 2 option: ";
     std::cin >> answer;
 
     int a, b;
@@ -104,12 +104,7 @@ void DecideTypeOfInput(int **arr, int n)
             for (int j = 0; j < n; j++)
             {
                 std::cout << "Element [" << i << "][" << j << "]:";
-                while (!(std::cin >> arr[i][j]))
-                {
-                    std::cout << "Invalid input" << '\n';
-                    std::cin.clear();
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                }
+                Input(arr[i][j], INT_MIN);
             }
         }
         break;
@@ -120,23 +115,12 @@ void DecideTypeOfInput(int **arr, int n)
         std::cout << "Enter interval borders [a, b]:\n";
 
         std::cout << "a = ";
-        while (!(std::cin >> a))
-        {
-            std::cout << "Invalid input for a. Please enter an integer number: " << std::endl;
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        }
-
+        Input(a, INT_MIN);
         std::cout << "b = ";
-        while (!(std::cin >> b))
-        {
-            std::cout << "Invalid input for b. Please enter an integer number: " << std::endl;
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        }
+        Input(b, INT_MIN);
         if (a > b)
         {
-            Swap(&a, &b);
+            std::swap(a, b);
         }
         std::srand(std::time(0));
 
@@ -171,11 +155,11 @@ int main()
     const int max = 100;
     int n;
 
-    std::cout << "Enter the side length of the square matrix (1-100): " << std::endl;
-    Input(&n, 1, 100);
+    std::cout << "Enter the side length of the square matrix: " << std::endl;
+    Input(n, 1);
     std::cout << "Number of matrix elements: " << n * n << std::endl;
 
-    int ** arr;
+    int **arr;
     AllocateMatrix(arr, n);
 
     DecideTypeOfInput(arr, n);
@@ -188,3 +172,4 @@ int main()
     delete[] arr;
     return 0;
 }
+
