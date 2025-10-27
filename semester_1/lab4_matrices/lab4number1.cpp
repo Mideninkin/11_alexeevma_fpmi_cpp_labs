@@ -152,7 +152,6 @@ void DecideTypeOfInput(int **arr, int n)
 int main()
 
 {
-    const int max = 100;
     int n;
 
     std::cout << "Enter the side length of the square matrix: " << std::endl;
@@ -172,4 +171,5 @@ int main()
     delete[] arr;
     return 0;
 }
+
 
