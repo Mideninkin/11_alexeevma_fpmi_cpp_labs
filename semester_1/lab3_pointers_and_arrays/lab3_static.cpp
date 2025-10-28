@@ -56,6 +56,10 @@ int SumBetweenNilElements(int *arr, int n)
         }
     }
     int sum = 0;
+    if (!(firstNil - lastNil))
+    {
+    std::cout << "First and last nil are neighboring elements";
+    }
     if (firstNil != lastNil && firstNil != -1 && lastNil != -1)
     {
         for (int i = firstNil + 1; i <= lastNil - 1; i++)
@@ -64,6 +68,8 @@ int SumBetweenNilElements(int *arr, int n)
         }
     }
     return sum;
+
+
 }
 
 void NewArray(int *arr, int n)
@@ -130,7 +136,7 @@ void DecideTypeOfInput(int *arr, int n)
     }
 }
 int main() {
-const long long int max = 10000000000000;
+const long long max = 10000000000000;
     int n;
     int arr[max];
 
