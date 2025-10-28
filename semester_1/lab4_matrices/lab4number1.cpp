@@ -1,7 +1,7 @@
 #include <iostream>
 #include <ctime>
 #include <random>
-#include <limits>
+#include <climits>
 
 void Input(int &x, int min)
 {
@@ -171,4 +171,5 @@ int main()
     delete[] matrix;
     return 0;
 }
+
 
