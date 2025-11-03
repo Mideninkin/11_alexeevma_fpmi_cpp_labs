@@ -3,16 +3,16 @@
 #include <random>
 #include <climits>
 
-void Input(int &x, int min)
+void Input(int& n, int min)
 {
     int d;
-    while (!(std::cin >> d) || (d < min))
+    if (!(std::cin >> d) || (d < min))
     {
-        std::cout << "Invalid input" << '\n';
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        throw "Error. Number must be an integer\n";
     }
-    x = d;
+    n = d;
 }
 
 void OutputOfMatrix(int **matrix, int n)
@@ -39,6 +39,7 @@ void AllocateMatrix(int **&matrix, int n)
 void FindMaximumsInNegativeColumns(int **matrix, int n)
 {
     bool FoundColumnWithoutPositives = false;
+    bool headerPrinted = false;
     for (int j = 0; j < n; j++)
     {
         bool HasPositive = false;
@@ -51,18 +52,22 @@ void FindMaximumsInNegativeColumns(int **matrix, int n)
                 break;
             }
         }
-
+        
         if (!HasPositive)
         {
-            std::cout << "Maximums in columns without positive elements: " << std::endl;
-            FoundColumnWithoutPositives = true;
+            FoundColumnWithoutPositives = true; 
+            if (!headerPrinted)
+            {
+                std::cout << "Maximums in columns without positive elements: " << std::endl;
+                headerPrinted = true;
+            }
             int max = matrix[0][j];
             for (int i = 0; i < n; i++)
             {
                 if (matrix[i][j] > max)
                     max = matrix[i][j];
             }
-            std::cout << "Column: " << j + 1 << ": " << max << std::endl;
+            std::cout << "Column " << j + 1 << ": " << max << std::endl;
         }
     }
     if (!FoundColumnWithoutPositives)
@@ -86,11 +91,21 @@ void FindNumberOfNegatives(int **matrix, int n)
     std::cout << "Number of negative elements in lower right triangle: " << counter;
 }
 
+void CleanDinamicMemory(int** matrix, int n)
+    {
+    for (int i = 0; i < n; i++)
+        delete[] matrix[i];
+    delete[] matrix;
+    }
+
 void DecideTypeOfInput(int **matrix, int n)
 {
     char answer;
     std::cout << "What input do you choose: manual or automatic? Press 'M' or 'm' to choose 1 option, 'A' or 'a' to choose 2 option: ";
-    std::cin >> answer;
+    if (!(std::cin >> answer)) 
+    {
+        throw "Error. Input must be a char\n";
+    }
 
     int a, b;
     switch (answer)
@@ -104,7 +119,13 @@ void DecideTypeOfInput(int **matrix, int n)
             for (int j = 0; j < n; j++)
             {
                 std::cout << "Element [" << i << "][" << j << "]:";
-                Input(matrix[i][j], INT_MIN);
+                try {
+                    Input(matrix[i][j], INT_MIN);
+                    }
+                catch(const char* msg) 
+                {
+                    throw "Error. Matrix elements must be integers\n";
+                }
             }
         }
         break;
@@ -115,9 +136,23 @@ void DecideTypeOfInput(int **matrix, int n)
         std::cout << "Enter interval borders [a, b]:\n";
 
         std::cout << "a = ";
-        Input(a, INT_MIN);
+        try 
+        {
+            Input(a, INT_MIN);
+        }
+        catch(const char* msg) 
+        {
+            throw "Error. Left border must be an integer\n";
+        }
         std::cout << "b = ";
-        Input(b, INT_MIN);
+        try 
+        {
+            Input(b, INT_MIN);
+        }
+        catch(const char* msg) 
+        {
+            throw "Error. Right border must be an integer\n";
+        }
         if (a > b)
         {
             std::swap(a, b);
@@ -137,15 +172,8 @@ void DecideTypeOfInput(int **matrix, int n)
         break;
     }
     default:
-        std::cout << "Invalid input. Using automatic fill." << std::endl;
-        std::srand(std::time(0));
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < n; j++)
-            {
-                *(*(matrix + i) + j) = -50 + std::rand() % 100;
-            }
-        }
+        CleanDinamicMemory(matrix, n);
+        throw "Error! Enter a char('A', 'a' or 'M', 'm')\n";
     }
 }
 
@@ -153,23 +181,24 @@ int main()
 
 {
     int n;
-
+    try
+    {
     std::cout << "Enter the side length of the square matrix: " << std::endl;
     Input(n, 1);
     std::cout << "Number of matrix elements: " << n * n << std::endl;
 
     int **matrix;
     AllocateMatrix(matrix, n);
-
     DecideTypeOfInput(matrix, n);
     OutputOfMatrix(matrix, n);
     FindMaximumsInNegativeColumns(matrix, n);
     FindNumberOfNegatives(matrix, n);
-
-    for (int i = 0; i < n; i++)
-        delete[] matrix[i];
-    delete[] matrix;
+    CleanDinamicMemory(matrix, n);
+    }
+    
+    catch(const char* msg)
+    {
+        std::cerr << msg;
+    }
     return 0;
 }
-
-
