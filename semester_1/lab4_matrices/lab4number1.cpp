@@ -72,7 +72,7 @@ void FindMaximumsInNegativeColumns(int **matrix, int n)
     }
     if (!FoundColumnWithoutPositives)
         {
-            std::cout << "There are no columns without positive elements!" << std::endl;
+            throw "There are no columns without positive elements!\n";
         }
     
 }
@@ -119,13 +119,7 @@ void DecideTypeOfInput(int **matrix, int n)
             for (int j = 0; j < n; j++)
             {
                 std::cout << "Element [" << i << "][" << j << "]:";
-                try {
-                    Input(matrix[i][j], INT_MIN);
-                    }
-                catch(const char* msg) 
-                {
-                    throw "Error. Matrix elements must be integers\n";
-                }
+                Input(matrix[i][j], INT_MIN);
             }
         }
         break;
@@ -136,23 +130,9 @@ void DecideTypeOfInput(int **matrix, int n)
         std::cout << "Enter interval borders [a, b]:\n";
 
         std::cout << "a = ";
-        try 
-        {
-            Input(a, INT_MIN);
-        }
-        catch(const char* msg) 
-        {
-            throw "Error. Left border must be an integer\n";
-        }
+        Input(a, INT_MIN);
         std::cout << "b = ";
-        try 
-        {
-            Input(b, INT_MIN);
-        }
-        catch(const char* msg) 
-        {
-            throw "Error. Right border must be an integer\n";
-        }
+        Input(b, INT_MIN);
         if (a > b)
         {
             std::swap(a, b);
