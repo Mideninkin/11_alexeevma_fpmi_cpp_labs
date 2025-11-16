@@ -1,3 +1,4 @@
+// Laboratory work - Matrix operations
 #include <iostream>
 #include <ctime>
 #include <random>
