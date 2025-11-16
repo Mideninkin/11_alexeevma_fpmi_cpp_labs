@@ -1,104 +1,181 @@
 #include <iostream>
-#include <string>
+#include <ctime>
+#include <random>
+#include <climits>
 
-void InputOfString (std::string& newstr)
+void Input(int& n, int min)
 {
-std::cout << "Enter string: " << std::endl;
-getline (std::cin, newstr);
-if (newstr.empty())
-        {
-            throw "Error! Your string is empty";
-        }
-
+    int d;
+    if (!(std::cin >> d) || (d < min))
+    {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        throw "Error. Number must be an integer\n";
+    }
+    n = d;
 }
 
-void Function(std::string& newstr)
+void OutputOfMatrix(int **matrix, int n)
 {
-    const std::string separators = " ,;:.\"!?'*\n";
-    unsigned words_counter = 0;
-    unsigned numbers_counter = 0;
-    size_t longest_number = 0;
-    std::string first_biggest_number;
-    size_t shortest_number = SIZE_MAX;
-    std::string last_smallest_number;
-    size_t longest_start = 0, longest_end = 0;
-    size_t shortest_start = 0, shortest_end = 0;
-    std::string longest_number_str, shortest_number_str;
-    size_t start = newstr.find_first_not_of(separators);
-    while (start != std::string::npos)
+    std::cout << "Matrix: " << std::endl;
+    for (int i = 0; i < n; i++)
     {
-        words_counter++;
-        size_t end = newstr.find_first_of(separators, start + 1);
-        if (end == std::string::npos) 
+        for (int j = 0; j < n; j++)
         {
-            end = newstr.length();
+            std::cout << *(*(matrix + i) + j);
+            if (j < n - 1)
+                std::cout << "\t";
         }
-        bool Is_number = true;
-        for (size_t i = start; i < end; i++)
+        std::cout << std::endl;
+    }
+}
+void AllocateMatrix(int **&matrix, int n)
+{
+    matrix = new int *[n];
+    for (int i = 0; i < n; i++)
+        matrix[i] = new int[n];
+}
+
+void FindMaximumsInNegativeColumns(int **matrix, int n)
+{
+    bool FoundColumnWithoutPositives = false;
+    bool headerPrinted = false;
+    for (int j = 0; j < n; j++)
+    {
+        bool HasPositive = false;
+
+        for (int i = 0; i < n; i++)
         {
-            if (!isdigit(newstr[i]))
+            if (*(*(matrix + i) + j) > 0)
             {
-                Is_number = false;
+                HasPositive = true;
                 break;
             }
         }
-        if (Is_number)
+        
+        if (!HasPositive)
         {
-            numbers_counter++;
-            std::string current_number = newstr.substr(start, end - start);
-            size_t current_length = current_number.length();
-            std::cout << current_number << " ";
-            if (current_length > longest_number)
+            FoundColumnWithoutPositives = true; 
+            if (!headerPrinted)
             {
-                longest_number = current_length;
-                first_biggest_number = current_number;
-                longest_start = start;
-                longest_end = end;
+                std::cout << "Maximums in columns without positive elements: " << std::endl;
+                headerPrinted = true;
             }
-            if (current_length <= shortest_number)
+            int max = matrix[0][j];
+            for (int i = 0; i < n; i++)
             {
-                shortest_number = current_length;
-                last_smallest_number = current_number;
-                shortest_start = start;
-                shortest_end = end;
+                if (matrix[i][j] > max)
+                    max = matrix[i][j];
+            }
+            std::cout << "Column " << j + 1 << ": " << max << std::endl;
+        }
+    }
+    if (!FoundColumnWithoutPositives)
+        {
+            throw "There are no columns without positive elements!\n";
+        }
+    
+}
+
+void FindNumberOfNegatives(int **matrix, int n)
+{
+    int counter = 0;
+    for (int j = n - 1; j >= 0; j--)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            if (matrix[i][j] < 0 && i + j >= n - 1)
+                counter += 1;
+        }
+    }
+    std::cout << "Number of negative elements in lower right triangle: " << counter;
+}
+
+void CleanDinamicMemory(int** matrix, int n)
+    {
+    for (int i = 0; i < n; i++)
+        delete[] matrix[i];
+    delete[] matrix;
+    }
+
+void DecideTypeOfInput(int **matrix, int n)
+{
+    char answer;
+    std::cout << "What input do you choose: manual or automatic? Press 'M' or 'm' to choose 1 option, 'A' or 'a' to choose 2 option: ";
+    if (!(std::cin >> answer)) 
+    {
+        throw "Error. Input must be a char\n";
+    }
+
+    int a, b;
+    switch (answer)
+    {
+    case 'M':
+    case 'm':
+    {
+        std::cout << "Enter " << n * n << " integer numbers:\n";
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                std::cout << "Element [" << i << "][" << j << "]:";
+                Input(matrix[i][j], INT_MIN);
             }
         }
-        start = newstr.find_first_not_of(separators, end + 1);
+        break;
     }
-    std::cout << std::endl;
-    std::cout << "Text contains " << words_counter << " words." << std::endl;
-    std::cout << numbers_counter << " of them are numbers." << std::endl;
-    if (!numbers_counter)
+    case 'A':
+    case 'a':
     {
-        throw "No numbers found in your string!";
+        std::cout << "Enter interval borders [a, b]:\n";
+
+        std::cout << "a = ";
+        Input(a, INT_MIN);
+        std::cout << "b = ";
+        Input(b, INT_MIN);
+        if (a > b)
+        {
+            std::swap(a, b);
+        }
+        std::srand(std::time(0));
+
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                int random_number = a + std::rand() % (b - a + 1);
+                *(*(matrix + i) + j) = random_number;
+            }
+        }
+
+        std::cout << "Matrix was filled with random numbers from [" << a << ", " << b << "]\n";
+        break;
     }
-    if (longest_number == 0 ^ shortest_number == SIZE_MAX)
-    {
-        throw "There is only one number in your string!";
-    }
-    else
-    {
-    std::cout << "First longest number is " << first_biggest_number << std::endl;
-    std::cout << "Length of this number is "<< longest_number << std::endl;
-    std::cout << "Last smallest number is " << last_smallest_number << std::endl;
-    std::cout << "Length of this number is "<< shortest_number << std::endl;
-    
-    std::string result_str = newstr;
-    result_str.replace(longest_start, longest_end - longest_start, shortest_number_str);
-    result_str.replace(shortest_start, shortest_end - shortest_start, longest_number_str);
-        
-        std::cout << "Original string: " << newstr << std::endl;
-        std::cout << "Modified string: " << result_str << std::endl;
+    default:
+        CleanDinamicMemory(matrix, n);
+        throw "Error! Enter a char('A', 'a' or 'M', 'm')\n";
     }
 }
+
 int main()
+
 {
+    int n;
     try
-    {    
-    std::string newstr;
-    InputOfString (newstr);
-    Function (newstr);
+    {
+    std::cout << "Enter the side length of the square matrix: " << std::endl;
+    Input(n, 1);
+    std::cout << "Number of matrix elements: " << n * n << std::endl;
+
+    int **matrix;
+    AllocateMatrix(matrix, n);
+    DecideTypeOfInput(matrix, n);
+    OutputOfMatrix(matrix, n);
+    FindMaximumsInNegativeColumns(matrix, n);
+    FindNumberOfNegatives(matrix, n);
+    CleanDinamicMemory(matrix, n);
     }
+    
     catch(const char* msg)
     {
         std::cerr << msg;
