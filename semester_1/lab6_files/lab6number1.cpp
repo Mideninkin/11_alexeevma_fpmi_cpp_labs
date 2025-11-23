@@ -14,9 +14,6 @@ bool Is_Open(std::ifstream &file)
 std::vector<std::string> WriteWordsToVector(const std::string filename)
 {
     std::ifstream fin{filename};
-    int start_position = 0;
-    int end_position = 0;
-
     if (!fin.is_open())
     {
         throw std::string("Error in process of opening file.");
