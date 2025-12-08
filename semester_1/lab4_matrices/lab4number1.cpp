@@ -10,11 +10,10 @@ void Input(int& n, int min)
     {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        throw "Error. Number must be an integer\n";
+        throw "You must have entered a natural number!";
     }
     n = d;
 }
-
 void OutputOfMatrix(int **matrix, int n)
 {
     std::cout << "Matrix: " << std::endl;
@@ -137,15 +136,16 @@ void DecideTypeOfInput(int **matrix, int n)
         {
             std::swap(a, b);
         }
-        std::srand(std::time(0));
-
-        for (int i = 0; i < n; i++)
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> distrib(a, b);
+    
+        for (int i = 0; i < n; i++) 
         {
-            for (int j = 0; j < n; j++)
-            {
-                int random_number = a + std::rand() % (b - a + 1);
-                *(*(matrix + i) + j) = random_number;
-            }
+        for (int j = 0; j < n; j++) 
+        {
+            matrix[i][j] = distrib(gen);
+        }
         }
 
         std::cout << "Matrix was filled with random numbers from [" << a << ", " << b << "]\n";
@@ -162,7 +162,7 @@ int main()
 {
     int n;
     try
-    {
+    {  
     std::cout << "Enter the side length of the square matrix: " << std::endl;
     Input(n, 1);
     std::cout << "Number of matrix elements: " << n * n << std::endl;
