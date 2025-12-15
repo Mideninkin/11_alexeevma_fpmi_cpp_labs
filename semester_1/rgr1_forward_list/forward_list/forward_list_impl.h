@@ -2,6 +2,8 @@
 
 #include <iterator>
 #include <iostream>
+#include <cstdint>
+#include <initializer_list>
 
 class ForwardList {
 
@@ -23,7 +25,7 @@ public:
         using pointer = value_type*;
         using reference = value_type&;
 
-        explicit ForwardListIterator(Node* position) : position_(position) {
+        explicit ForwardListIterator(Node* position) : position_(position) {    
         }
 
         ForwardListIterator& operator++() {  // prefix
@@ -40,7 +42,7 @@ public:
         }
 
         bool operator==(const ForwardListIterator& other) const {
-            // your code goes here
+           return position_ == other.position_;
         }
 
         bool operator!=(const ForwardListIterator& other) const {
@@ -62,20 +64,20 @@ public:
     // methods for "ranged-based for loop"
     // 1) non-const version
     ForwardListIterator begin() {
-        // your code goes here
+        return ForwardListIterator(front_);
     }
     ForwardListIterator end() {
-        // your code goes here
+        return ForwardListIterator(nullptr);
     }
 
     // 2) const version
     // TODO: think about return type
     // (is it exactly ForwardListIterator?)
     ForwardListIterator begin() const {
-        // your code goes here
+        return ForwardListIterator(front_);
     }
     ForwardListIterator end() const {
-        // your code goes here
+        return ForwardListIterator(nullptr);
     }
 
     // default constructor
@@ -84,7 +86,7 @@ public:
     // copy constructor
     ForwardList(const ForwardList& rhs);
 
-    // Constructs a ForwardList with `count` copies of elements with value `value`.
+    // Constructs a ForwardList with count copies of elements with value value.
     ForwardList(size_t count, int32_t value);
 
     // Constructs a ForwardList with std::initializer_list<int32_t>
@@ -103,14 +105,14 @@ public:
     void PopFront();
 
     // remove every occurence of an element in the list
-    // whose value equals to param `value`,
+    // whose value equals to param value,
     // the remaining elements must remain in the same order
     void Remove(int32_t value);
 
     // erases all the elements
     void Clear();
 
-    // find list's element by the `value`
+    // find list's element by the value
     // returns true, if element exists
     // otherwise, returns false
     bool FindByValue(int32_t value);
@@ -125,5 +127,6 @@ public:
     size_t Size() const;
 
 private:
-    // your code goes here
+    Node* front_ = nullptr;
+    size_t size_ = 0;
 };
