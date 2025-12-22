@@ -1,0 +1,14 @@
+UDC: 7889
+Title: Harry Potter and the Philosopher's Stone
+Year: 1997
+Authors: Rowling J. K.
+
+UDC: 123
+Title: Introduction to Programming
+Year: 2022
+Authors: Smith John A.
+
+UDC: 5875
+Title: The Great Gatsby
+Year: 1925
+Authors: Fitzgerald F. Scott
