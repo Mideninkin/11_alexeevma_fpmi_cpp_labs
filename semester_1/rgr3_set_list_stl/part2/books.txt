@@ -1,0 +1,14 @@
+UDC: 4757
+Title: 1984
+Year: 1949
+Authors: Orwell George
+
+UDC: 5875
+Title: The Great Gatsby
+Year: 1925
+Authors: Fitzgerald F. Scott
+
+UDC: 7889
+Title: Harry Potter and the Philosopher's Stone
+Year: 1997
+Authors: Rowling J. K.
