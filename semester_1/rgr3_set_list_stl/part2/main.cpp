@@ -98,7 +98,6 @@ public:
         Book current_book;
         
         while (std::getline(file, line)) {
-            // Trim whitespace
             line.erase(0, line.find_first_not_of(" \t"));
             line.erase(line.find_last_not_of(" \t") + 1);
             
@@ -285,7 +284,7 @@ int main() {
     
     lib.RemoveAuthorFromBook("Harry Potter and the Philosopher's Stone", "Dostoevskiy");
     
-    Book new_book{123, {Author("Smith", "John", "A.")}, "Introduction to Programming", "2022"};
+    Book new_book{123, {Author("Smith", "John", "A.")}, "Grey land", "2022"};
     lib.AddBook(new_book);
 
     lib.DeleteBook("1984");
